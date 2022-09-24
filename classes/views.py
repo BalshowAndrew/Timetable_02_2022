@@ -1,11 +1,11 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+
+from .forms import QueryForm
 
 
 def index(request):
@@ -32,3 +32,13 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+def get_query(request):
+    # context = {'title': 'Форма запроса',
+    #            }
+    if request.method == 'POST':
+        pass
+    else:
+        form = QueryForm()
+    return render(request, 'classes/query.html', {'form': form})

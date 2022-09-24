@@ -1,0 +1,16 @@
+{% extends 'classes/base.html' %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+<h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
+<p>Форма запроса</p>
+
+<form action="query" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Отправить запрос</button>
+</form>
+
+
+{% endblock %}

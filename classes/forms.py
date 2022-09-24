@@ -11,13 +11,18 @@ class QueryForm(forms.Form):
     category = forms.ChoiceField(
         choices=CATEGORY_CHOICES,
         label='Категория занятия',
-        widget=forms.Select()
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
     )
     first_day = forms.DateField(
         label='Первый день',
         widget=forms.TextInput(
             attrs={
-            'type':'date'
+                'class': 'form-control',
+                'type': 'date'
         })
 
     )
@@ -25,6 +30,7 @@ class QueryForm(forms.Form):
         label='Последний день',
         widget=forms.TextInput(
             attrs={
-                'type':'date'
+                'class': 'form-control',
+                'type': 'date'
             })
     )

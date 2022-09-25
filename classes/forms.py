@@ -1,5 +1,5 @@
 from django import forms
-from .models import Classes
+
 
 class QueryForm(forms.Form):
     LECTURE = 'L'
@@ -14,8 +14,7 @@ class QueryForm(forms.Form):
         widget=forms.Select(
             attrs={
                 'class': 'form-control'
-            }
-        )
+            })
     )
     first_day = forms.DateField(
         label='Первый день',
@@ -23,8 +22,7 @@ class QueryForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'type': 'date'
-        })
-
+            })
     )
     last_day = forms.DateField(
         label='Последний день',
@@ -34,3 +32,4 @@ class QueryForm(forms.Form):
                 'type': 'date'
             })
     )
+

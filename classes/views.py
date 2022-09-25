@@ -14,6 +14,7 @@ def index(request):
     }
     return render(request, 'classes/index.html', context=context)
 
+
 def show_person(request):
     context = {
         'title': 'Личный кабинет',
@@ -29,16 +30,26 @@ class LoginUser(LoginView):
     def get_success_url(self):
         return reverse_lazy('person')
 
+
 def logout_user(request):
     logout(request)
     return redirect('home')
 
 
 def get_query(request):
-    # context = {'title': 'Форма запроса',
-    #            }
+
     if request.method == 'POST':
-        pass
+        form = QueryForm(request.POST)
+        if form.is_valid():
+            return redirect('result')
     else:
         form = QueryForm()
-    return render(request, 'classes/query.html', {'form': form})
+
+    return render(request, 'classes/query.html', {'form': form, 'title': 'Форма запроса'})
+
+
+def get_result(request):
+    context = {
+        'title': 'Результат запроса',
+    }
+    return render(request, 'classes/result.html', context=context)

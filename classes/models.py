@@ -114,3 +114,7 @@ class Classes(models.Model):
         verbose_name_plural = 'Занятия'
         ordering = ['start_day', 'course', 'faculty']
 
+#
+# class Queries(models.Model):
+
+

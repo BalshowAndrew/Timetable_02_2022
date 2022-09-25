@@ -10,5 +10,7 @@ urlpatterns = [
     path('login/', LoginUser.as_view(), name='login'),
     path('person/logout/', logout_user, name='logout'),
     path('person/query/logout/', logout_user, name='logout'),
+    path('person/query/result/logout/', logout_user, name='logout'),
     path('person/query/', get_query, name='query'),
+    path('person/query/result/', get_result, name='result'),
 ]

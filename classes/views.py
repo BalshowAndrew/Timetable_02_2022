@@ -49,7 +49,7 @@ def get_query(request):
 
 
 def get_result(request):
-    query = Queries.objects.last()
+    query = Queries.objects.order_by('pk').last()
     context = {
         'title': 'Результат запроса',
         'query': query

@@ -6,6 +6,11 @@
 <h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
 <p>Результат запроса</p>
 <p>{{ user.username }}</p>
+<p>{{ user.email }}</p>
+<p>{{ user.id }}</p>
+{% for q in query %}
+    <p>{{ q.category }} : {{ q.first_day }} : {{ q.last_day }}</p>
+{% endfor %}
 
 <!--<a class="btn btn-primary" href="{% url 'query' %}" role="button">Перейти к форме запроса</a>-->
 

@@ -6,7 +6,7 @@
 <h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
 <p>Форма запроса</p>
 
-<form action="/person/query/result/" method="post">
+<form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary form-control">Отправить запрос</button>

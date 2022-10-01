@@ -115,6 +115,30 @@ class Classes(models.Model):
         ordering = ['start_day', 'course', 'faculty']
 
 #
-# class Queries(models.Model):
+class Queries(models.Model):
+    LECTURE = 'L'
+    PRACTICE = 'P'
+    CATEGORY_CHOICES = [
+        (LECTURE, 'лекция'),
+        (PRACTICE, ' практическое'),
+    ]
+    category = models.CharField(
+        max_length=1,
+        choices=CATEGORY_CHOICES,
+        default=PRACTICE,
+        verbose_name='Категория занятия',
+    )
+    first_day = models.DateField(
+        verbose_name='Первый день',
+    )
+    last_day = models.DateField(
+        verbose_name='Последний день'
+    )
 
+    def __str__(self):
+        return self.category
 
+    class Meta:
+        verbose_name = 'Запрос'
+        verbose_name_plural = 'Запросы'
+        ordering = ['category', 'first_day', 'last_day']

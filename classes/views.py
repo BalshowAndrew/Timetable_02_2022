@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from .forms import QueryForm
+from .models import Classes, Queries
 
 
 def index(request):
@@ -36,20 +37,32 @@ def logout_user(request):
     return redirect('home')
 
 
-def get_query(request):
+# def get_query(request):
+#     if request.method == 'POST':
+#         form = QueryForm(request.POST)
+#         if form.is_valid():
+#             return redirect('result')
+#     else:
+#         form = QueryForm()
+#
+#     return render(request, 'classes/query.html', {'form': form, 'title': 'Форма запроса'})
 
+
+def get_query(request):
     if request.method == 'POST':
         form = QueryForm(request.POST)
         if form.is_valid():
+            form.save()
             return redirect('result')
     else:
         form = QueryForm()
-
     return render(request, 'classes/query.html', {'form': form, 'title': 'Форма запроса'})
 
 
 def get_result(request):
+    query = Queries.objects.all()
     context = {
         'title': 'Результат запроса',
+        'query': query
     }
     return render(request, 'classes/result.html', context=context)

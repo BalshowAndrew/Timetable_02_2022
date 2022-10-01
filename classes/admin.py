@@ -29,5 +29,15 @@ class ClassesAdmin(admin.ModelAdmin):
     )
 
 
+class QueriesAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'category',
+        'first_day',
+        'last_day'
+    )
+
+
 admin.site.register(Start_class, Start_classAdmin)
 admin.site.register(Classes, ClassesAdmin)
+admin.site.register(Queries, QueriesAdmin)

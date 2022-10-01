@@ -2,15 +2,14 @@
 
 {% block content %}
 
-<h1>{{ title }}</h1>
-<h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
-<p>Результат запроса</p>
-<p>{{ user.username }}</p>
-<p>{{ user.email }}</p>
-<p>{{ user.id }}</p>
-{% for q in query %}
-    <p>{{ q.category }} : {{ q.first_day }} : {{ q.last_day }}</p>
-{% endfor %}
+<h2>{{ user.first_name }} {{ user.last_name }}!</h2>
+{% if query.category == 'P' %}
+<h4>Практические занятия</h4>
+{% else %}
+<p>Лекции</p>
+{% endif %}
+<p>с {{ query.first_day }} по {{ query.last_day }}</p>
+
 
 <!--<a class="btn btn-primary" href="{% url 'query' %}" role="button">Перейти к форме запроса</a>-->
 

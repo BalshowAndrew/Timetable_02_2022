@@ -49,7 +49,7 @@ def get_query(request):
 
 
 def get_result(request):
-    query = Queries.objects.all()
+    query = Queries.objects.last()
     context = {
         'title': 'Результат запроса',
         'query': query

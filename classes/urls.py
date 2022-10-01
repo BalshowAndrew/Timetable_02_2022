@@ -9,6 +9,7 @@ urlpatterns = [
     path('person/', show_person, name='person'),
     path('login/', LoginUser.as_view(), name='login'),
     path('person/logout/', logout_user, name='logout'),
+    path('login/logout/', logout_user, name='logout'),
     path('person/query/logout/', logout_user, name='logout'),
     path('person/query/result/logout/', logout_user, name='logout'),
     path('person/query/', get_query, name='query'),

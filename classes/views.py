@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from .forms import QueryForm
+from .forms import *
 from .models import Classes, Queries
 
 
@@ -24,7 +24,7 @@ def show_person(request):
 
 
 class LoginUser(LoginView):
-    form_class = AuthenticationForm
+    form_class = LoginUserForm
     template_name = 'classes/login.html'
     extra_context = {'title': 'Авторизация'}
 
@@ -35,17 +35,6 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('home')
-
-
-# def get_query(request):
-#     if request.method == 'POST':
-#         form = QueryForm(request.POST)
-#         if form.is_valid():
-#             return redirect('result')
-#     else:
-#         form = QueryForm()
-#
-#     return render(request, 'classes/query.html', {'form': form, 'title': 'Форма запроса'})
 
 
 def get_query(request):

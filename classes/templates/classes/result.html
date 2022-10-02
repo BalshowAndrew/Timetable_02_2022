@@ -10,6 +10,32 @@
 {% endif %}
 <p>с {{ query.first_day }} по {{ query.last_day }}</p>
 
+<table class="table table striped">
+    <thead>
+        <tr class="table-light">
+        {% if query.category == 'P' %}
+            <th scope="col">Группа</th>
+            <th scope="col">Начало цикла</th>
+            <th scope="col">Окончание цикла</th>
+            <th scope="col">Время занятий</th>
+        {% elif query.category == 'L' %}
+            <th>Факультет</th>
+            <th>Курс</th>
+            <th>Дата проведения</th>
+            <th>Время проведения</th>
+        {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>one</td>
+            <td>two</td>
+            <td>three</td>
+            <td>four</td>
+        </tr>
+    </tbody>
+</table>
+
 
 <!--<a class="btn btn-primary" href="{% url 'query' %}" role="button">Перейти к форме запроса</a>-->
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -45,13 +46,14 @@ def get_query(request):
             return redirect('result')
     else:
         form = QueryForm()
-    return render(request, 'classes/query.html', {'form': form, 'title': 'Форма запроса'})
+    return render(request, 'classes/query.html', {'form': form})
 
 
 def get_result(request):
     query = Queries.objects.order_by('pk').last()
+    query.save()
     context = {
         'title': 'Результат запроса',
-        'query': query
+        'query': query,
     }
     return render(request, 'classes/result.html', context=context)

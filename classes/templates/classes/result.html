@@ -9,7 +9,10 @@
 <h4>Лекции</h4>
 {% endif %}
 <p>с {{ query.first_day }} по {{ query.last_day }}</p>
-
+<!--<p>{{ user.pk }}</p>-->
+{% for r in result %}
+<p>{{ r.category }}</p>
+{% endfor %}
 <table class="table table striped">
     <thead>
         <tr class="table-light">

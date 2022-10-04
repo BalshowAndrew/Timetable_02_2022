@@ -51,9 +51,22 @@ def get_query(request):
 
 def get_result(request):
     query = Queries.objects.order_by('pk').last()
-    query.save()
+    if query.category == 'P':
+        result = Classes.objects.filter(
+            teacher_id=request.user.pk,
+            category='P'
+        )
+    elif query.category == 'L':
+        result = Classes.objects.filter(
+            teacher_id=request.user.pk,
+            category='L'
+        )
+
+
     context = {
-        'title': 'Результат запроса',
         'query': query,
+        'result': result,
+        'title': 'Результат запроса',
+
     }
     return render(request, 'classes/result.html', context=context)

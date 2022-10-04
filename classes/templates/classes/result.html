@@ -9,10 +9,6 @@
 <h4>Лекции</h4>
 {% endif %}
 <p>с {{ query.first_day }} по {{ query.last_day }}</p>
-<!--<p>{{ user.pk }}</p>-->
-{% for r in result %}
-<p>{{ r.category }}</p>
-{% endfor %}
 <table class="table table striped">
     <thead>
         <tr class="table-light">
@@ -22,20 +18,34 @@
             <th scope="col">Окончание цикла</th>
             <th scope="col">Время занятий</th>
         {% elif query.category == 'L' %}
-            <th>Факультет</th>
-            <th>Курс</th>
-            <th>Дата проведения</th>
-            <th>Время проведения</th>
+            <th scope="col">Факультет</th>
+            <th scope="col">Курс</th>
+            <th scope="col">Дата проведения</th>
+            <th scope="col">Время проведения</th>
         {% endif %}
         </tr>
     </thead>
     <tbody>
+    {% if query.category == 'P' %}
+        {% for r in result %}
         <tr>
-            <td>one</td>
-            <td>two</td>
-            <td>three</td>
-            <td>four</td>
+            <td>{{ r.group }}</td>
+            <td>{{ r.start_day }}</td>
+            <td>{{ r.end_day }}</td>
+            <td>{{ r.start }}</td>
         </tr>
+        {% endfor %}
+    {% elif query.category == 'L' %}
+        {% for r in result %}
+        <tr>
+            <td>{{ r.faculty }}</td>
+            <td>{{ r.course }}</td>
+            <td>{{ r.start_day }}</td>
+            <td>{{ r.start }}</td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+
     </tbody>
 </table>
 

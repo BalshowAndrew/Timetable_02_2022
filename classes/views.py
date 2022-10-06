@@ -35,6 +35,7 @@ class LoginUser(LoginView):
 
 def logout_user(request):
     logout(request)
+    Queries.objects.all().delete()
     return redirect('home')
 
 
@@ -54,14 +55,17 @@ def get_result(request):
     if query.category == 'P':
         result = Classes.objects.filter(
             teacher_id=request.user.pk,
-            category='P'
+            category='P',
+            start_day__gte=query.first_day,
+            start_day__lte=query.last_day
         )
     elif query.category == 'L':
         result = Classes.objects.filter(
             teacher_id=request.user.pk,
-            category='L'
+            category='L',
+            start_day__gte=query.first_day,
+            start_day__lte=query.last_day
         )
-
 
     context = {
         'query': query,

@@ -1,0 +1,14 @@
+{% extends 'classes/base.html' %}
+
+{% block content %}
+
+<h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
+{% if query.category == 'P' %}
+<p class="text-danger">В период с {{ query.first_day }} по {{ query.last_day }} у Вас нет практических занятий</p>
+{% elif query.category == 'L' %}
+<p class="text-danger">В период с {{ query.first_day }} по {{ query.last_day }} у Вас нет лекций</p>
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'query' %}" role="button">Следующий запрос</a>
+
+{% endblock %}

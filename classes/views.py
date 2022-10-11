@@ -50,6 +50,32 @@ def get_query(request):
     return render(request, 'classes/query.html', {'form': form})
 
 
+# def get_result(request):
+#     query = Queries.objects.order_by('pk').last()
+#     if query.category == 'P':
+#         result = Classes.objects.filter(
+#             teacher_id=request.user.pk,
+#             category='P',
+#             start_day__gte=query.first_day,
+#             start_day__lte=query.last_day
+#         )
+#     elif query.category == 'L':
+#         result = Classes.objects.filter(
+#             teacher_id=request.user.pk,
+#             category='L',
+#             start_day__gte=query.first_day,
+#             start_day__lte=query.last_day
+#         )
+#
+#     context = {
+#         'query': query,
+#         'result': result,
+#         'title': 'Результат запроса',
+#
+#     }
+#     return render(request, 'classes/result.html', context=context)
+
+
 def get_result(request):
     query = Queries.objects.order_by('pk').last()
     if query.category == 'P':
@@ -73,4 +99,10 @@ def get_result(request):
         'title': 'Результат запроса',
 
     }
-    return render(request, 'classes/result.html', context=context)
+    if len(result) == 0:
+        return render(request, 'classes/non_result.html', context=context)
+    else:
+        return render(request, 'classes/result.html', context=context)
+
+
+

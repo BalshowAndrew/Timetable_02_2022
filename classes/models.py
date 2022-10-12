@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.db import models
 
 from django.db import models
 
@@ -20,7 +19,7 @@ class Start_class(models.Model):
         ordering = ['time']
 
 
-# модель "Занятие"
+# модель "Занятия"
 class Classes(models.Model):
     # поле выбора "Занятие"
     LECTURE = 'L'

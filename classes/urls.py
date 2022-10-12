@@ -15,4 +15,5 @@ urlpatterns = [
     path('person/query/result/logout/', logout_user, name='logout'),
     path('person/query/', get_query, name='query'),
     path('person/query/result/', get_result, name='result'),
+    path('result_csv/', result_csv, name='result_csv')
 ]

@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+import csv
 
 from .forms import *
 from .models import Classes, Queries
@@ -49,33 +50,7 @@ def get_query(request):
         form = QueryForm()
     return render(request, 'classes/query.html', {'form': form})
 
-
-# def get_result(request):
-#     query = Queries.objects.order_by('pk').last()
-#     if query.category == 'P':
-#         result = Classes.objects.filter(
-#             teacher_id=request.user.pk,
-#             category='P',
-#             start_day__gte=query.first_day,
-#             start_day__lte=query.last_day
-#         )
-#     elif query.category == 'L':
-#         result = Classes.objects.filter(
-#             teacher_id=request.user.pk,
-#             category='L',
-#             start_day__gte=query.first_day,
-#             start_day__lte=query.last_day
-#         )
-#
-#     context = {
-#         'query': query,
-#         'result': result,
-#         'title': 'Результат запроса',
-#
-#     }
-#     return render(request, 'classes/result.html', context=context)
-
-
+# Генерация ответа на запрос пользователя
 def get_result(request):
     query = Queries.objects.order_by('pk').last()
     if query.category == 'P':
@@ -99,10 +74,45 @@ def get_result(request):
         'title': 'Результат запроса',
 
     }
+    # Генерация сообщения об отсутствии значений в результате запроса
     if len(result) == 0:
         return render(request, 'classes/non_result.html', context=context)
     else:
         return render(request, 'classes/result.html', context=context)
 
 
+# Генерация csv файла по результату запроса пользователя
+def result_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=result.csv'
+    writer = csv.writer(response)
+    # выбираем данные из моделей:
+    query = Queries.objects.order_by('pk').last()
+    if query.category == 'P':
+        result = Classes.objects.filter(
+            teacher_id=request.user.pk,
+            category='P',
+            start_day__gte=query.first_day,
+            start_day__lte=query.last_day
+        )
+        # заголовки столбцов для практических занятий:
+        writer.writerow(['Группа', 'Начало цикла', 'Окончание цикла', 'Время занятия'])
+        # заполняем ячейки данными, полученными по запросу:
+        for r in result:
+            writer.writerow([r.group, r.start_day, r.end_day, r.start])
+
+    elif query.category == 'L':
+        result = Classes.objects.filter(
+            teacher_id=request.user.pk,
+            category='L',
+            start_day__gte=query.first_day,
+            start_day__lte=query.last_day
+        )
+        # заголовки столбцов для лекций:
+        writer.writerow(['факультет', 'Курс', 'Дата проведения', 'Время проведения'])
+        # заполняем ячейки данными, полученными по запросу:
+        for r in result:
+            writer.writerow([r.faculty, r.course, r.start_day, r.start])
+
+    return response
 

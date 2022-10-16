@@ -11,6 +11,7 @@ import csv
 from django.http import FileResponse
 import io
 import reportlab.rl_config
+
 reportlab.rl_config.warnOnMissingFountGryphs = 0
 
 from reportlab.pdfgen import canvas
@@ -26,10 +27,6 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-
-
-
-
 
 from .forms import *
 from .models import Classes, Queries
@@ -73,6 +70,7 @@ def get_query(request):
     else:
         form = QueryForm()
     return render(request, 'classes/query.html', {'form': form})
+
 
 # Генерация ответа на запрос пользователя
 def get_result(request):
@@ -143,8 +141,10 @@ def result_csv(request):
 
 # Генерация PDF файла по результатам запроса пользователя
 def result_pdf(request):
+    buf = io.BytesIO()
     # выбираем данные из моделей:
     global classesName
+    global resultList
     user = User.objects.get(id=request.user.pk)
     query = Queries.objects.order_by('pk').last()
     if query.category == 'P':
@@ -154,6 +154,10 @@ def result_pdf(request):
             start_day__gte=query.first_day,
             start_day__lte=query.last_day
         )
+        classesName = 'практических занятий'
+        resultList = [['Группа', 'Начало цикла', 'Окончание цикла', 'Время занятий']]
+        for r in result:
+            resultList.append([r.group, r.start_day, r.end_day, r.start])
     elif query.category == 'L':
         result = Classes.objects.filter(
             teacher_id=request.user.pk,
@@ -161,12 +165,11 @@ def result_pdf(request):
             start_day__gte=query.first_day,
             start_day__lte=query.last_day
         )
-    if query.category == 'P':
-        classesName = 'практических занятий'
-    elif query.category == 'L':
         classesName = 'лекций'
-    # Cоздаём буфер потока байтов:
-    buf = io.BytesIO()
+        resultList = [['Факультет', 'Курс', 'Дата проведения', 'Время проведения']]
+        for r in result:
+            resultList.append([r.faculty, r.course, r.start_day, r.start])
+
     # регистрация шрифта:
     pdfmetrics.registerFont(TTFont('ARIALUNI', 'classes/static/classes/fonts/ARIALUNI.ttf'))
     # стили по умолчанию:
@@ -184,26 +187,32 @@ def result_pdf(request):
         alignment=TA_CENTER,
         fontName='ARIALUNI',
     ))
-    # styles['Heading1'].fontName = 'ARIALUNI'
 
     doc = SimpleDocTemplate(buf,
                             pagesize=A4,
-                            title='Basic thing',
-                            author='Gogol')
+                            title='Timetable',
+                            author='Andrew')
 
     # словарь документа
     pdf_result = []
     # заголовок
-    pdf_result.append(Paragraph(f"{user.last_name} {user.first_name}", styles["Heading1_CENTER"]))
+    pdf_result.append(Paragraph(f"{user.first_name} {user.last_name}", styles["Heading1_CENTER"]))
     pdf_result.append(Paragraph(f'Расписание {classesName}', styles['Heading1_CENTER']))
     pdf_result.append(Paragraph(f'c {query.first_day} по {query.last_day}', styles['Heading1_CENTER']))
     # таблица
-
+    t = Table(resultList)
+    stile = TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, -1), 'ARIALUNI'),
+        ('FONTSIZE', (0, 0), (3, 0), 14),
+        ('FONTSIZE', (0, 1), (-1, -1), 13),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('LINEBELOW', (0, 0), (3, 0), 1, colors.black),
+    ])
+    t.setStyle(stile)
+    pdf_result.append(t)
 
     doc.build(pdf_result)
     buf.seek(0)
 
     return FileResponse(buf, as_attachment=True, filename='result.pdf')
-
-
-

@@ -11,15 +11,7 @@ import csv
 from django.http import FileResponse
 import io
 import reportlab.rl_config
-
 reportlab.rl_config.warnOnMissingFountGryphs = 0
-
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter, A4
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
@@ -27,6 +19,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+
+
 
 from .forms import *
 from .models import Classes, Queries
@@ -37,6 +31,8 @@ def index(request):
         'title': 'Расписание кафедры',
     }
     return render(request, 'classes/index.html', context=context)
+
+
 
 
 def show_person(request):
@@ -201,6 +197,7 @@ def result_pdf(request):
     pdf_result.append(Paragraph(f'c {query.first_day} по {query.last_day}', styles['Heading1_CENTER']))
     # таблица
     t = Table(resultList)
+    # стиль таблицы:
     stile = TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, -1), 'ARIALUNI'),

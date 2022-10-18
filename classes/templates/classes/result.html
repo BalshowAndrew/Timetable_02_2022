@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2> {{ user.first_name }} {{ user.last_name }}</h2>
+<h3>Пользователь: <b>{{ user.first_name }} {{ user.last_name }}</b></h3>
 {% if query.category == 'P' %}
 <h4>Практические занятия</h4>
 {% elif query.category == 'L' %}

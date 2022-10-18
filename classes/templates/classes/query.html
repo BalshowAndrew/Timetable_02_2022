@@ -3,8 +3,8 @@
 {% block content %}
 
 <h1>{{ title }}</h1>
-<h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
-<p>Форма запроса</p>
+<h3>Пользователь: <b>{{ user.first_name }} {{ user.last_name }}</b></h3>
+<h4 class="text-primary">Форма запроса</h4>
 
 <form action="" method="post">
     {% csrf_token %}

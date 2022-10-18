@@ -1,10 +1,11 @@
 {% extends 'classes/base.html' %}
 
+
 {% block content %}
 
 <h1>{{ title }}</h1>
-<h2>Уважаемый {{ user.first_name }} {{ user.last_name }}!</h2>
-<p>Содержимое личного кабинета</p>
+<h3>Уважаемый <b>{{ user.first_name }} {{ user.last_name }}</b>!</h3>
+<p>Перейдите к форме запроса, выберите категорию занятия и временной интервал</p>
 <a class="btn btn-primary" href="{% url 'query' %}" role="button">Перейти к форме запроса</a>
 
 {% endblock %}

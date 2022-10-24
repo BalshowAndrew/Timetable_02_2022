@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportMixin
 
 from .models import *
 
@@ -7,7 +8,7 @@ class Start_classAdmin(admin.ModelAdmin):
     list_display = ('id', 'time')
 
 
-class ClassesAdmin(admin.ModelAdmin):
+class ClassesAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'category',
